@@ -1,20 +1,43 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { axios } from "axios";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { NextResponse } from "next/server";
 
 export default function SignUp() {
+    const router = useRouter();
     const [user, setUser] = React.useState({
         email: "",
         password: "",
         username: ""
     })
 
+    const [buttonDisabled, setButtonDisabled] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
     const onSignup = async () => {
-
+        const res = NextResponse;
+        try {
+            setLoading(true);
+            const response = await axios.post('/api/users/signup', user);
+            console.log("Signup success", response.data);  
+            toast.success("Signup Successful");
+            router.push('/login');
+        } catch (error: any) {
+            console.log("Signup failed",error.message);
+            toast.error(error.message)
+        }finally{
+            setLoading(false);
+        }
     }
-
+    useEffect(() => {
+        if(user.email.length >0 && user.password.length >0 && user.username.length >0) {
+            setButtonDisabled(false);
+        } else {
+            setButtonDisabled(true);
+        }
+    }, [user])
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2">
             <h1>
@@ -22,21 +45,21 @@ export default function SignUp() {
             </h1>
             <hr />
             <label htmlFor="username">Username</label>
-            <input className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600" 
+            <input className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 " 
             type="text" name="" 
             id="username"
             placeholder="Username"
             value={user.username} onChange={(e) => setUser({...user, username:e.target.value})} 
             />
             <label htmlFor="email">Email</label>
-            <input className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600" 
+            <input className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 " 
             type="email" name="" 
             id="email" 
             placeholder="Email"
             value={user.email} onChange={(e) => setUser({...user, email:e.target.value})} 
             />
             <label htmlFor="password">Password</label>
-            <input className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600" 
+            <input className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600 " 
             type="password" name="" 
             id="password" 
             placeholder="Password"
@@ -44,7 +67,7 @@ export default function SignUp() {
             />
             <button
             onClick={onSignup}
-            className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600">Signup</button>
+            className="p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600">{buttonDisabled ? "No signup" : "Signup here"}</button>
             <Link href="/login">Visit Login</Link>
         </div>
     )
