@@ -22,7 +22,7 @@ export default function LoginPage() {
       console.log("Login Success",response.data);
       toast.success("Login Successful");
       router.push('/profile');
-    }catch(error: any){
+    }catch(error:any){
       console.log("Login failed", error.message);
       toast.error("Login failed. Please try again.");
     }finally{
@@ -60,7 +60,7 @@ export default function LoginPage() {
         placeholder='Password' />
       <button
         onClick={onLogin}
-        className='p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600'>Login here</button>
+        className='p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600'>{buttonDisabled ? "No login" : "Login here"} </button>
       <Link href="/signup">Visit Signup</Link>
     </div>
 
