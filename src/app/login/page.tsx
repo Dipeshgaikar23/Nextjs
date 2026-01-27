@@ -19,13 +19,13 @@ export default function LoginPage() {
     try {
       setLoading(true);
       const response = await axios.post('/api/users/login', user);
-      console.log("Login Success",response.data);
+      console.log("Login Success", response.data);
       toast.success("Login Successful");
       router.push('/profile');
-    }catch(error:any){
+    } catch (error: any) {
       console.log("Login failed", error.message);
       toast.error("Login failed. Please try again.");
-    }finally{
+    } finally {
       setLoading(false);
     }
   }
@@ -36,7 +36,7 @@ export default function LoginPage() {
     } else {
       setButtonDisabled(true);
     }
-  },[user]);
+  }, [user]);
 
   return (
     <div className='flex flex-col items-center justify-center min-h-screen py-2'>
@@ -52,7 +52,7 @@ export default function LoginPage() {
         placeholder='Email' />
       <label htmlFor="password">Password</label>
       <input
-        type="text"
+        type="password"
         className='p-2 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600'
         id='password'
         value={user.password}
