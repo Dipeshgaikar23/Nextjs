@@ -7,6 +7,7 @@ import React from "react";
 const ProfilePage = () => {
   const router = useRouter();
   const [userData, setUserData] =  React.useState<any>(null);
+  
   const getData = async () => {
     try {                     
 
